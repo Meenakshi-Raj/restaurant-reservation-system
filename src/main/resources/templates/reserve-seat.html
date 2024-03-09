@@ -6,5 +6,10 @@
 </head>
 <body>
 <h2>Reserve your Seats here!</h2>
+<form th:action="@{/reserveUser}" method="GET">
+    <input type="text" name="name" placeholder="Enter your name " />
+    <input type="text" name="email" placeholder="Enter your email " />
+    <input type="submit" />
+</form>
 </body>
 </html>

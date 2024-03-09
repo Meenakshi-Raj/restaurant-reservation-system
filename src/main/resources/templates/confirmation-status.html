@@ -5,8 +5,6 @@
     <title>Confirmation Status</title>
 </head>
 <body>
-<p th:if="${ticketStatus == true}">Your seat is reserved.</p>
-<p th:if="${!ticketStatus}">No reservation in your name.</p>
-
+<p th:text="${message}"></p>
 </body>
 </html>

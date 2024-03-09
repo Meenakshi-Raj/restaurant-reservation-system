@@ -1,5 +1,7 @@
 package com.meen.reservation.controller;
 
+import com.meen.reservation.entity.User;
+import com.meen.reservation.entity.UserDTO;
 import com.meen.reservation.service.RestaurantServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,11 +34,18 @@ public class RestaurantReservationController {
             return "error";
         }
     }
-
     @GetMapping("/reserveSeat")
-    public String bookTicket(Model theModel){
+    public String reserveSeat(){
         return "reserve-seat";
     }
+    @GetMapping("reserveUser")
+    public String reserveUserSeat(UserDTO userDTO, Model model){
+        User user = restaurantServiceImpl.reserve(userDTO);
+        model.addAttribute("bookingId",user.getBookingId());
+        return "reserved";
+    }
+
+
     @GetMapping("/confirmSeat")
     public String confirmSeat(Model theModel){
         return "confirm-seat";
@@ -44,8 +53,14 @@ public class RestaurantReservationController {
 
     @GetMapping("/checkConfirmation")
     public String checkBookingStatus(@RequestParam("userName") String name, Model model){
-        boolean status = restaurantServiceImpl.checkReservationStatus(name);
-        model.addAttribute("ticketStatus",status);
+        String message;
+        User user = restaurantServiceImpl.checkReservationStatus(name);
+        if(user != null){
+            message = "Reservation Confirmed with Booking ID: " + user.getBookingId();
+        }else{
+            message = "No Reservation under given name!";
+        }
+        model.addAttribute("message",message);
         return "confirmation-status";
     }
 }
